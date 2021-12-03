@@ -4,27 +4,24 @@ import operator
 import copy
 
 def calc_rating(report, op, tie):
-    a = copy.copy(report)
+    arr = copy.copy(report)
     col = 0
-    while a.shape[0] > 1:
+    while arr.shape[0] > 1:
         # are we looking for 0s or 1s?
-        half = a.shape[0] / 2
-        if op((cnt := sum(a[:,col])), half):
+        half = arr.shape[0] / 2
+        if op((cnt := sum(arr[:,col])), half):
             common = 1
         elif cnt == half:
             common = tie
         else:
             common = 0
 
-        # find the rows in col with that value
-        rows = [a[row][col] == common for row in range(a.shape[0])]
-
-        # make a new a
-        a = a[rows][:]
+        # make a new arr with only the rows in col that have that value
+        arr = arr[np.where(arr[:,col] == common)]
         col += 1
 
     # convert the remaining row to binary
-    s = ''.join([str(val) for val in a[0][:]])
+    s = ''.join([str(val) for val in arr[0][:]])
     return int(s, 2)
 
 with open(sys.argv[1]) as f:
