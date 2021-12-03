@@ -30,8 +30,8 @@ with open(sys.argv[1]) as f:
 gamma = ""
 eps = ""
 half = report.shape[0] / 2
-for i in range(report.shape[1]):
-    if sum(report[:,i]) > half:
+for col in range(report.shape[1]):
+    if sum(report[:,col]) > half:
         gamma += "1"
         eps += "0"
     else:
