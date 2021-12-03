@@ -1,10 +1,9 @@
 import sys
 import numpy as np
 import operator
-import copy
 
 def calc_rating(report, op, tie):
-    arr = copy.copy(report)
+    arr = report.copy()
     col = 0
     while arr.shape[0] > 1:
         # are we looking for 0s or 1s?
