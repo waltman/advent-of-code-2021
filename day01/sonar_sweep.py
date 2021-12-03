@@ -8,7 +8,7 @@ def count_larger(a):
     return cnt
 
 with open(sys.argv[1]) as f:
-    depth = [int(line) for line in f.readlines()]
+    depth = [int(line) for line in f]
 
 print('Part 1:', count_larger(depth))
 

@@ -25,7 +25,7 @@ def calc_rating(report, op, tie):
     return int(s, 2)
 
 with open(sys.argv[1]) as f:
-    report = np.array([[int(c) for c in line.rstrip()] for line in f.readlines()])
+    report = np.array([[int(c) for c in line.rstrip()] for line in f])
 
 gamma = ""
 eps = ""
