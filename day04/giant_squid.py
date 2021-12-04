@@ -3,10 +3,10 @@ import numpy as np
 
 def is_winner(mat):
     for row in range(5):
-        if not np.any(mat[row][:]):
+        if not np.any(mat[row,:]):
             return True
     for col in range(5):
-        if not np.any(mat[:][col]):
+        if not np.any(mat[:,col]):
             return True
     return False
 
@@ -26,13 +26,15 @@ with open(sys.argv[1]) as f:
             marks.append(np.array([[True for _ in range(5)] for _ in range(5)]))
             board = []
 
-done = False
+alive = {i for i in range(len(boards))}
 for number in numbers:
-    if done:
+    if not alive:
         break
-    for i in range(len(boards)):
+    for i in list(alive):
         marks[i][np.where(boards[i] == number)] = False
         if is_winner(marks[i]):
-            print('Part 1:', sum(boards[i][np.where(marks[i])]) * number)
-            done = True
-            break
+            if len(alive) == len(boards):
+                print('Part 1:', sum(boards[i][np.where(marks[i])]) * number)
+            elif len(alive) == 1:
+                print('Part 2:', sum(boards[i][np.where(marks[i])]) * number)
+            alive.remove(i)
