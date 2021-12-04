@@ -26,7 +26,7 @@ with open(sys.argv[1]) as f:
             unmarked.append(np.array([[True for _ in range(5)] for _ in range(5)]))
             board = []
 
-alive = {i for i in range(len(boards))}
+alive = {*range(len(boards))}
 for number in numbers:
     if not alive:
         break
