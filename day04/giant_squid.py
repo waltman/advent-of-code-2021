@@ -14,7 +14,7 @@ def is_winner(mat):
 boards = []
 unmarked = []
 with open(sys.argv[1]) as f:
-    numbers = [int(n) for n in f.readline().split(',')]
+    numbers = map(int, f.readline().split(','))
     board = []
     for line in f:
         line = line.rstrip()
