@@ -12,7 +12,7 @@ def is_winner(mat):
 
 # parse the input
 boards = []
-marks = []
+unmarked = []
 with open(sys.argv[1]) as f:
     numbers = [int(n) for n in f.readline().split(',')]
     board = []
@@ -23,7 +23,7 @@ with open(sys.argv[1]) as f:
         board.append([int(n) for n in line.split()])
         if len(board) == 5:
             boards.append(np.array(board))
-            marks.append(np.array([[True for _ in range(5)] for _ in range(5)]))
+            unmarked.append(np.array([[True for _ in range(5)] for _ in range(5)]))
             board = []
 
 alive = {i for i in range(len(boards))}
@@ -31,10 +31,10 @@ for number in numbers:
     if not alive:
         break
     for i in list(alive):
-        marks[i][np.where(boards[i] == number)] = False
-        if is_winner(marks[i]):
+        unmarked[i][np.where(boards[i] == number)] = False
+        if is_winner(unmarked[i]):
             if len(alive) == len(boards):
-                print('Part 1:', sum(boards[i][np.where(marks[i])]) * number)
+                print('Part 1:', sum(boards[i][np.where(unmarked[i])]) * number)
             elif len(alive) == 1:
-                print('Part 2:', sum(boards[i][np.where(marks[i])]) * number)
+                print('Part 2:', sum(boards[i][np.where(unmarked[i])]) * number)
             alive.remove(i)
