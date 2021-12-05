@@ -6,11 +6,9 @@ def diag_points(x1,y1,x2,y2):
     dx = 1 if x1 < x2 else -1
     dy = 1 if y1 < y2 else -1
     cnt = abs(x1-x2) + 1
-    x,y = x1,y1
-    for _ in range(cnt):
-        yield(x,y)
-        x += dx
-        y += dy
+    x = [i for i in range(x1, x2+dx, dx)]
+    y = [i for i in range(y1, y2+dy, dy)]
+    return y,x
 
 # parse the input
 lines = []
@@ -31,6 +29,5 @@ print('Part 1:', len(grid[np.where(grid > 1)]))
 
 for x1,y1,x2,y2 in lines:
     if x1 != x2 and y1 != y2:
-        for x,y in diag_points(x1,y1,x2,y2):
-            grid[y,x] += 1
+        grid[diag_points(x1,y1,x2,y2)] += 1
 print('Part 2:', len(grid[np.where(grid > 1)]))
