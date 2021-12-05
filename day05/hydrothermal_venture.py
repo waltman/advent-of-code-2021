@@ -5,7 +5,6 @@ import re
 def diag_points(x1,y1,x2,y2):
     dx = 1 if x1 < x2 else -1
     dy = 1 if y1 < y2 else -1
-    cnt = abs(x1-x2) + 1
     x = [i for i in range(x1, x2+dx, dx)]
     y = [i for i in range(y1, y2+dy, dy)]
     return y,x
