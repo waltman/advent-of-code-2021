@@ -16,10 +16,8 @@ def diag_points(x1,y1,x2,y2):
 lines = []
 with open(sys.argv[1]) as f:
     for line in f:
-        t1, t2 = re.split(' -> ', line.rstrip())
-        x1,y1 = [int(x) for x in t1.split(',')]
-        x2,y2 = [int(x) for x in t2.split(',')]
-        lines.append((x1,y1,x2,y2))
+        m = re.search('(\d+),(\d+) -> (\d+),(\d+)', line)
+        lines.append([int(x) for x in m.group(1,2,3,4)])
 
 grid = np.zeros([1000,1000],int)
 for x1,y1,x2,y2 in lines:
