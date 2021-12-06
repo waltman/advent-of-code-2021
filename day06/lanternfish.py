@@ -9,7 +9,7 @@ for day in range(256):
     tmp = fish[1:]
     tmp[6] += fish[0]
     tmp.append(fish[0])
-    fish = [x for x in tmp]
+    fish = tmp
 
     if day == 79:
         print('Part 1:', sum(fish))
