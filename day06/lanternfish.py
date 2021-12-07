@@ -6,7 +6,7 @@ with open(sys.argv[1]) as f:
         fish[x] += 1
 
 for day in range(256):
-    fish = fish[1:] + [fish[0]]
+    fish = fish[1:] + fish[0:1]
     fish[6] += fish[8]
 
     if day == 79:
