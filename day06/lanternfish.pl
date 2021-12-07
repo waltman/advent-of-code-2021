@@ -8,9 +8,8 @@ my @fish = (0) x 9;
 $fish[$_]++ for split ',', <>;
 
 for my $day (1..256) {
-    my $tmp = shift @fish;
-    $fish[6] += $tmp;
-    $fish[8] = $tmp;
+    @fish = (@fish[1..$#fish], $fish[0]);
+    $fish[6] += $fish[8];
 
     if ($day == 80) {
         say "Part 1: ", sum(@fish);
