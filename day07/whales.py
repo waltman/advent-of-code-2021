@@ -2,7 +2,7 @@ import sys
 
 def cost(x, y):
     dist = abs(x-y)
-    return sum(range(dist+1))
+    return dist * (dist + 1) // 2
 
 with open(sys.argv[1]) as f:
     crabs = [int(x) for x in f.readline().split(',')]
