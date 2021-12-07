@@ -6,10 +6,10 @@ with open(sys.argv[1]) as f:
         fish[x] += 1
 
 for day in range(256):
-    tmp = fish[1:]
-    tmp[6] += fish[0]
-    tmp.append(fish[0])
-    fish = tmp
+    tmp = fish[0]
+    fish = fish[1:]
+    fish[6] += tmp
+    fish.append(tmp)
 
     if day == 79:
         print('Part 1:', sum(fish))
