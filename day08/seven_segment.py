@@ -35,12 +35,11 @@ with open(sys.argv[1]) as f:
         m = re.match(r'(.*) \| (.*)', line.rstrip())
         inputs = m.group(1).split(' ')
         outputs = m.group(2).split(' ')
-        for tok in outputs:
-            if len(tok) in uniq_lens:
-                cnt += 1
         mapping = get_mapping(DISPLAY, inputs)
         val = 0
         for tok in outputs:
+            if len(tok) in uniq_lens:
+                cnt += 1
             tokset = set(tok)
             for i in range(len(mapping)):
                 if tokset == mapping[i]:
