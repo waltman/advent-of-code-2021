@@ -23,7 +23,7 @@ def get_mapping(display, inputs):
         mapping = [{remapping[c] for c in d} for d in display]
         found = True
         for tok in inputs:
-            tokset = {c for c in tok}
+            tokset = set(tok)
             if tokset not in mapping:
                 found = False
                 break
@@ -41,7 +41,7 @@ with open(sys.argv[1]) as f:
         mapping = get_mapping(DISPLAY, inputs)
         val = 0
         for tok in outputs:
-            tokset = {c for c in tok}
+            tokset = set(tok)
             for i in range(len(mapping)):
                 if tokset == mapping[i]:
                     val *= 10
