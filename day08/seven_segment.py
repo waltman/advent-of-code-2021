@@ -19,7 +19,7 @@ DISPLAY = ['abcefg',
 
 def get_mapping(display, inputs):
     for perm in permutations(range(7)):
-        remapping = {'abcdefg'[i] : 'abcdefg'[perm[i]] for i in range(7)}
+        remapping = {'abcdefg'[i] : 'abcdefg'[p] for i,p in enumerate(perm)}
         mapping = [{remapping[c] for c in d} for d in display]
         found = True
         for tok in inputs:
@@ -41,8 +41,8 @@ with open(sys.argv[1]) as f:
             if len(tok) in uniq_lens:
                 cnt += 1
             tokset = set(tok)
-            for i in range(len(mapping)):
-                if tokset == mapping[i]:
+            for i,m in enumerate(mapping):
+                if tokset == m:
                     val *= 10
                     val += i
                     break
