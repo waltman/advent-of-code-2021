@@ -3,6 +3,9 @@ import numpy as np
 from queue import Queue
 from math import prod
 
+def neighbors(row, col):
+    return [(row+1,col), (row-1,col), (row,col+1), (row,col-1)]
+
 def basin_size(low, grid):
     seen = set()
     q = Queue()
@@ -14,7 +17,7 @@ def basin_size(low, grid):
             continue
         size += 1
         seen.add((row,col))
-        for r,c in [(row+1,col), (row-1,col), (row,col+1), (row,col-1)]:
+        for r,c in neighbors(row, col):
             if grid[r,c] <= 8 and (r,c) not in seen:
                 q.put((r,c))
     return size
