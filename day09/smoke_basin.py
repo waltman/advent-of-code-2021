@@ -36,10 +36,7 @@ lows = []
 for row in range(1, grid.shape[0]-1):
     for col in range(1, grid.shape[1]-1):
         val = grid[row,col]
-        if val < grid[row-1,col] and \
-           val < grid[row+1,col] and \
-           val < grid[row,col-1] and \
-           val < grid[row,col+1]:
+        if np.all(val < grid[[row-1,row+1,row,row],[col,col,col-1,col+1]]):
            risk += val+1
            lows.append((row, col))
 print('Part 1:', risk)
