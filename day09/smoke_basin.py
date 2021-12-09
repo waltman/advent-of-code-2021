@@ -4,7 +4,7 @@ from queue import Queue
 from math import prod
 
 def neighbors(row, col):
-    return [(row+1,col), (row-1,col), (row,col+1), (row,col-1)]
+    return [row+1,row-1,row,row],[col,col,col+1,col-1]
 
 def basin_size(low, grid):
     seen = set()
@@ -17,7 +17,7 @@ def basin_size(low, grid):
             continue
         size += 1
         seen.add((row,col))
-        for r,c in neighbors(row, col):
+        for r,c in zip(*neighbors(row, col)):
             if grid[r,c] <= 8 and (r,c) not in seen:
                 q.put((r,c))
     return size
@@ -36,7 +36,7 @@ lows = []
 for row in range(1, grid.shape[0]-1):
     for col in range(1, grid.shape[1]-1):
         val = grid[row,col]
-        if np.all(val < grid[[row-1,row+1,row,row],[col,col,col-1,col+1]]):
+        if np.all(val < grid[neighbors(row, col)]):
            risk += val+1
            lows.append((row, col))
 print('Part 1:', risk)
