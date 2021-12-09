@@ -1,5 +1,22 @@
 import sys
 import numpy as np
+from queue import Queue
+
+def basin_size(low, grid):
+    seen = set()
+    q = Queue()
+    q.put(low)
+    size = 0
+    while not q.empty():
+        row, col = q.get()
+        if (row,col) in seen:
+            continue
+        size += 1
+        seen.add((row,col))
+        for r,c in [(row+1,col), (row-1,col), (row,col+1), (row,col-1)]:
+            if grid[r,c] <= 8 and (r,c) not in seen:
+                q.put((r,c))
+    return size
 
 # read in the grid
 with open(sys.argv[1]) as f:
@@ -11,6 +28,7 @@ grid[1:rows+1,1:cols+1] = tmp
 
 # find low points
 risk = 0
+lows = []
 for row in range(1, grid.shape[0]-1):
     for col in range(1, grid.shape[1]-1):
         val = grid[row,col]
@@ -19,6 +37,10 @@ for row in range(1, grid.shape[0]-1):
            val < grid[row,col-1] and \
            val < grid[row,col+1]:
            risk += val+1
+           lows.append((row, col))
 print('Part 1:', risk)
 
-        
+# find the basins
+basins = [basin_size(low, grid) for low in lows]
+basins = sorted(basins)
+print('Part 2:', basins[-1] * basins[-2] * basins[-3])
