@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from queue import Queue
+from math import prod
 
 def basin_size(low, grid):
     seen = set()
@@ -42,5 +43,4 @@ print('Part 1:', risk)
 
 # find the basins
 basins = [basin_size(low, grid) for low in lows]
-basins = sorted(basins)
-print('Part 2:', basins[-1] * basins[-2] * basins[-3])
+print('Part 2:', prod(sorted(basins)[-3:]))
