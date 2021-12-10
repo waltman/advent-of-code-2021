@@ -40,8 +40,7 @@ with open(sys.argv[1]) as f:
         if stack:
             score = 0
             for c in stack[::-1]:
-                score *= 5
-                score += AUTOCOMPLETE_POINTS[MATCH[c]]
+                score += 5 * score + AUTOCOMPLETE_POINTS[MATCH[c]]
             autocomplete_scores.append(score)
 print('Part 1:', error_score)
 print('Part 2:', sorted(autocomplete_scores)[len(autocomplete_scores)//2])
