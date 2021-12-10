@@ -8,11 +8,7 @@ POINTS = { ')': 3,
 
 MATCH = {x[0]: x[1] for x in zip("()[]{}<>", ")(][}{><")}
 
-AUTOCOMPLETE_POINTS = { ')': 1,
-                        ']': 2,
-                        '}': 3,
-                        '>': 4,
-                      }
+AUTOCOMPLETE_POINTS = {c: i+1 for i,c in enumerate(")]}>")}
 
 error_score = 0
 autocomplete_scores = []
