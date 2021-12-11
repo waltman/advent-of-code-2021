@@ -20,7 +20,6 @@ cols = len(tmp[0])
 grid = np.zeros([rows+2, cols+2], int)
 grid[1:rows+1,1:cols+1] = tmp
 flashed = np.zeros(grid.shape, bool)
-reset_flashed(flashed)
 
 flashes = 0
 step = 1
@@ -35,6 +34,7 @@ while (True):
         queued.add(coords)
 
     # Step 2
+    reset_flashed(flashed)
     while not q.empty():
         row, col = q.get()
         flashed[row,col] = True
@@ -48,7 +48,6 @@ while (True):
 
     # Step 3
     grid[np.where(grid > 9)] = 0
-    reset_flashed(flashed)
 
     # Check if we're done
     if step == 100:
