@@ -40,12 +40,11 @@ while True:
         row, col = q.get()
         flashed[row,col] = True
         flashes += 1
-        for r,c in neighbors(row, col):
-            if not flashed[r,c]:
-                grid[r,c] += 1
-                if grid[r,c] > 9 and (r,c) not in queued:
-                    q.put((r,c))
-                    queued.add((r,c))
+        for r,c in filter(lambda coord: not flashed[coord], neighbors(row, col)):
+            grid[r,c] += 1
+            if grid[r,c] > 9 and (r,c) not in queued:
+                q.put((r,c))
+                queued.add((r,c))
 
     # Step 3
     grid[flashed] = 0
