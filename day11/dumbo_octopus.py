@@ -23,8 +23,8 @@ flashed = np.zeros(grid.shape, bool)
 reset_flashed(flashed)
 
 flashes = 0
-for step in range(1, 101):
-    print('Step ', step)
+step = 1
+while (True):
     # Step 1
     grid[1:grid.shape[0]-1, 1:grid.shape[1]-1] += 1
     q = Queue()
@@ -41,7 +41,6 @@ for step in range(1, 101):
         flashes += 1
         for r,c in neighbors(row, col):
             if not flashed[r,c]:
-    #            print(row, col, r ,c)
                 grid[r,c] += 1
                 if grid[r,c] > 9 and (r,c) not in queued:
                     q.put((r,c))
@@ -50,6 +49,15 @@ for step in range(1, 101):
     # Step 3
     grid[np.where(grid > 9)] = 0
     reset_flashed(flashed)
-    print(grid)
-    print('Flashes', flashes)
+
+    # Check if we're done
+    if step == 100:
+        print('Part 1:', flashes)
+    if (np.all(grid == 0)):
+        print('Part 2:', step)
+        break
+    else:
+        step += 1
+
+
 
