@@ -63,8 +63,7 @@ int main(int argc, char *argv[]) {
         if (incomplete) {
             unsigned long long score = 0;
             while (!stk.empty()) {
-                char c = stk.top();
-                score = 5 * score + autocomplete_points[match[c]];
+                score = 5 * score + autocomplete_points[match[stk.top()]];
                 stk.pop();
             }
             autocomplete_scores.push_back(score);
