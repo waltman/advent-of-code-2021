@@ -23,12 +23,13 @@ flashed = np.zeros(grid.shape, bool)
 
 flashes = 0
 step = 1
+q = Queue()
+queued = set()
 while True:
     # Step 1
     grid[1:grid.shape[0]-1, 1:grid.shape[1]-1] += 1
-    q = Queue()
     rows, cols = np.where(grid > 9)
-    queued = set()
+    queued.clear()
     for coords in zip(rows, cols):
         q.put(coords)
         queued.add(coords)
