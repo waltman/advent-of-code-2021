@@ -57,6 +57,3 @@ while True:
         break
     else:
         step += 1
-
-
-
