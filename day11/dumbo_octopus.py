@@ -48,7 +48,7 @@ while True:
                     queued.add((r,c))
 
     # Step 3
-    grid[np.where(grid > 9)] = 0
+    grid[flashed] = 0
 
     # Check if we're done
     if step == 100:
