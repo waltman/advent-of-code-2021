@@ -23,7 +23,7 @@ flashed = np.zeros(grid.shape, bool)
 
 flashes = 0
 step = 1
-while (True):
+while True:
     # Step 1
     grid[1:grid.shape[0]-1, 1:grid.shape[1]-1] += 1
     q = Queue()
