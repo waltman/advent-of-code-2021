@@ -1,14 +1,15 @@
 import sys
-import networkx as nx
 from queue import Queue
 from collections import defaultdict
 
 # parse the input
-G = nx.Graph()
+#G = nx.Graph()
+neighbors = defaultdict(set)
 with open(sys.argv[1]) as f:
     for line in f:
         (n1, n2) = line.rstrip().split('-')
-        G.add_edge(n1, n2)
+        neighbors[n1].add(n2)
+        neighbors[n2].add(n1)
 
 # find the paths
 paths = []
@@ -19,7 +20,7 @@ while not q.empty():
     if node == 'end':
         paths.append(path.copy())
     else:
-        for neighbor in G.adj[node]:
+        for neighbor in neighbors[node]:
             if neighbor.isupper() or (neighbor.islower() and neighbor not in path):
                 q.put((neighbor, path + [neighbor]))
 print('Part 1:', len(paths))
@@ -33,7 +34,7 @@ while not q.empty():
     if node == 'end':
         paths.append(path.copy())
     else:
-        for neighbor in filter(lambda s: s != 'start', G.adj[node]):
+        for neighbor in filter(lambda s: s != 'start', neighbors[node]):
             if neighbor.isupper():
                 q.put((neighbor, path + [neighbor], smalls, dupe_ok))
             elif neighbor not in smalls:
