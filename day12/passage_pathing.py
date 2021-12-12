@@ -10,34 +10,41 @@ with open(sys.argv[1]) as f:
         neighbors[n1].add(n2)
         neighbors[n2].add(n1)
 
+# remove backlinks to start
+for neighbor in neighbors.values():
+    if 'start' in neighbor:
+        neighbor.remove('start')
+
 # find the paths
-paths = []
+paths = 0
 q = Queue()
-q.put(('start', ['start']))
+q.put(('start', set()))
 while not q.empty():
-    node, path = q.get()
+    node, smalls = q.get()
     if node == 'end':
-        paths.append(path.copy())
+        paths += 1
     else:
         for neighbor in neighbors[node]:
-            if neighbor.isupper() or (neighbor.islower() and neighbor not in path):
-                q.put((neighbor, path + [neighbor]))
-print('Part 1:', len(paths))
+            if neighbor.isupper():
+                q.put((neighbor, smalls))
+            elif neighbor not in smalls:
+                q.put((neighbor, smalls | set([neighbor])))
+print('Part 1:', paths)
 
 # find the paths for part 2
-paths = []
+paths = 0
 q = Queue()
-q.put(('start', ['start'], set(), True))
+q.put(('start', set(), True))
 while not q.empty():
-    node, path, smalls, dupe_ok = q.get()
+    node, smalls, dupe_ok = q.get()
     if node == 'end':
-        paths.append(path.copy())
+        paths += 1
     else:
-        for neighbor in filter(lambda s: s != 'start', neighbors[node]):
+        for neighbor in neighbors[node]:
             if neighbor.isupper():
-                q.put((neighbor, path + [neighbor], smalls, dupe_ok))
+                q.put((neighbor, smalls, dupe_ok))
             elif neighbor not in smalls:
-                q.put((neighbor, path + [neighbor], smalls | set([neighbor]), dupe_ok))
+                q.put((neighbor, smalls | set([neighbor]), dupe_ok))
             elif dupe_ok:
-                q.put((neighbor, path + [neighbor], smalls, False))
-print('Part 2:', len(paths))
+                q.put((neighbor, smalls, False))
+print('Part 2:', paths)
