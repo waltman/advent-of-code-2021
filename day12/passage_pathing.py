@@ -1,5 +1,4 @@
 import sys
-from queue import Queue
 from collections import defaultdict
 
 # parse the input
@@ -17,34 +16,32 @@ for neighbor in neighbors.values():
 
 # find the paths
 paths = 0
-q = Queue()
-q.put(('start', set()))
-while not q.empty():
-    node, smalls = q.get()
+stack = [('start', set())]
+while stack:
+    node, smalls = stack.pop()
     if node == 'end':
         paths += 1
     else:
         for neighbor in neighbors[node]:
             if neighbor.isupper():
-                q.put((neighbor, smalls))
+                stack.append((neighbor, smalls))
             elif neighbor not in smalls:
-                q.put((neighbor, smalls | set([neighbor])))
+                stack.append((neighbor, smalls | set([neighbor])))
 print('Part 1:', paths)
 
 # find the paths for part 2
 paths = 0
-q = Queue()
-q.put(('start', set(), True))
-while not q.empty():
-    node, smalls, dupe_ok = q.get()
+stack = [('start', set(), True)]
+while stack:
+    node, smalls, dupe_ok = stack.pop()
     if node == 'end':
         paths += 1
     else:
         for neighbor in neighbors[node]:
             if neighbor.isupper():
-                q.put((neighbor, smalls, dupe_ok))
+                stack.append((neighbor, smalls, dupe_ok))
             elif neighbor not in smalls:
-                q.put((neighbor, smalls | set([neighbor]), dupe_ok))
+                stack.append((neighbor, smalls | set([neighbor]), dupe_ok))
             elif dupe_ok:
-                q.put((neighbor, smalls, False))
+                stack.append((neighbor, smalls, False))
 print('Part 2:', paths)
