@@ -4,9 +4,6 @@ from queue import Queue
 from collections import defaultdict
 
 def addable(node, path):
-    if node == 'start':
-        return False
-
     cnts = defaultdict(int)
     ok = True
     for k in filter(lambda s: s.islower(), path):
@@ -45,7 +42,7 @@ while not q.empty():
     if node == 'end':
         paths.append(path.copy())
     else:
-        for neighbor in G.adj[node]:
+        for neighbor in filter(lambda s: s != 'start', G.adj[node]):
             if neighbor.isupper():
                 q.put((neighbor, path + [neighbor]))
             elif addable(neighbor, path):
