@@ -2,16 +2,23 @@ import sys
 import numpy as np
 import re
 
-#grid = np.zeros([15,11], bool)
-grid = np.zeros([895,1311], bool)
+def round_up_odd(arr):
+    biggest = max(arr)+1
+    return biggest if biggest % 2 else biggest+1
+
 with open(sys.argv[1]) as f:
     # read in points
+    rows = []
+    cols = []
     for line in f:
         line = line.rstrip()
         if line == '':
             break
         col, row = map(int, line.split(','))
-        grid[row,col] = True
+        rows.append(row)
+        cols.append(col)
+    grid = np.zeros([round_up_odd(rows), round_up_odd(cols)], bool)
+    grid[rows,cols] = True
 
     # handle folds
     fold = 1
