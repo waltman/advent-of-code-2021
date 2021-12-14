@@ -3,10 +3,10 @@ from collections import defaultdict
 
 def compute_score(num_pairs):
     counts = defaultdict(int)
-    for k in num_pairs.keys():
+    for k,v in num_pairs.items():
         for c in k:
             if c != ' ':
-                counts[c] += num_pairs[k] / 2
+                counts[c] += v / 2
     return int(max(counts.values()) - min(counts.values()))
 
 # parse input
