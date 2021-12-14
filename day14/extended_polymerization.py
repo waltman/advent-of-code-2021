@@ -26,7 +26,7 @@ for i in range(len(polymer)-1):
 # add extra pairs for the front and back
 num_pairs[' ' + polymer[0]] = num_pairs[polymer[-1] + ' '] = 1
 
-# apply rulss
+# apply rules
 for step in range(1,41):
     new_num_pairs = defaultdict(int)
     for pair in num_pairs.keys():
