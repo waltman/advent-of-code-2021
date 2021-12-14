@@ -28,25 +28,23 @@ print('Part 1:', max(counts.values()) - min(counts.values()))
 pairs = defaultdict(int)
 for i in range(len(save_polymer)-1):
     pairs[save_polymer[i:i+2]] += 1
+pairs[' ' + save_polymer[0]] = 1
+pairs[save_polymer[-1] + ' '] = 1
 
-print(pairs)
-for step in range(1,5):
+for step in range(1,41):
     new_pairs = defaultdict(int)
     for pair in pairs:
-        rule = rules[pair]
-        new_pairs[pair[0] + rule] += 1
-        new_pairs[rule + pair[1]] += 1
+        if pair in rules:
+            rule = rules[pair]
+            new_pairs[pair[0] + rule] += pairs[pair]
+            new_pairs[rule + pair[1]] += pairs[pair]
+        else:
+            new_pairs[pair] = 1
     pairs = new_pairs
-    print(step, pairs)
-counts = defaultdict(int)
-for c in 'NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB':
-    counts[c] += 1
-print('real', counts)
 
-counts2 = defaultdict(int)
+counts = defaultdict(int)
 for k in pairs:
     for c in k:
-        counts2[c] += pairs[k]
-print('test', counts2)
-print('NNCB -> NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB')
-
+        if c != ' ':
+            counts[c] += pairs[k] / 2
+print('Part 2:', int(max(counts.values()) - min(counts.values())))
