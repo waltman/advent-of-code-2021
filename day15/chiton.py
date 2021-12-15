@@ -33,7 +33,7 @@ for row in range(num_rows):
             val = 1
         grid[row].append(val)
 
-# add the remaining columns
+# add the remaining rows
 for row in range(num_rows, num_rows*5):
     arr = []
     for col in range(num_cols*5):
