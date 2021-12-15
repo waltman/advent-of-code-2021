@@ -1,24 +1,46 @@
 import sys
 import networkx as nx
 
+def dist(grid, num_rows, num_cols):
+    # convert to digraph
+    DG = nx.DiGraph()
+    # rows
+    for row in range(num_rows):
+        for col in range(num_cols-1):
+            DG.add_weighted_edges_from([((row,col),(row,col+1),grid[row][col+1])])
+            DG.add_weighted_edges_from([((row,col+1),(row,col),grid[row][col])])
+            # cols
+    for col in range(num_cols):
+        for row in range(num_rows-1):
+            DG.add_weighted_edges_from([((row,col),(row+1,col),grid[row+1][col])])
+            DG.add_weighted_edges_from([((row+1,col),(row,col),grid[row][col])])
+
+    # find distance
+    return nx.dijkstra_path_length(DG, (0,0), (num_rows-1,num_cols-1))
+
 # parse the input
 with open(sys.argv[1]) as f:
     grid = [[int(c) for c in line.rstrip()] for line in f]
 num_rows = len(grid)
 num_cols = len(grid[0])
 
-# convert to digraph
-DG = nx.DiGraph()
-# rows
-for row in range(num_rows):
-    for col in range(num_cols-1):
-        DG.add_weighted_edges_from([((row,col),(row,col+1),grid[row][col+1])])
-        DG.add_weighted_edges_from([((row,col+1),(row,col),grid[row][col])])
-# cols
-for col in range(num_cols):
-    for row in range(num_rows-1):
-        DG.add_weighted_edges_from([((row,col),(row+1,col),grid[row+1][col])])
-        DG.add_weighted_edges_from([((row+1,col),(row,col),grid[row][col])])
+print('Part 1:', dist(grid, num_rows, num_cols))
 
-# find distance
-print(nx.dijkstra_path_length(DG, (0,0), (num_rows-1,num_cols-1)))
+# expand first num_rows rows
+for row in range(num_rows):
+    for col in range(num_cols, num_cols*5):
+        val = grid[row][col-num_cols] + 1
+        if val == 10:
+            val = 1
+        grid[row].append(val)
+
+# add the remaining columns
+for row in range(num_rows, num_rows*5):
+    arr = []
+    for col in range(num_cols*5):
+        val = grid[row-num_rows][col] + 1
+        if val == 10:
+            val = 1
+        arr.append(val)
+    grid.append(arr)
+print('Part 2:', dist(grid, num_rows*5, num_cols*5))
