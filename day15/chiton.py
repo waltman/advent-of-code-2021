@@ -29,9 +29,7 @@ print('Part 1:', dist(grid, num_rows, num_cols))
 # expand first num_rows rows
 for row in range(num_rows):
     for col in range(num_cols, num_cols*5):
-        if (val := grid[row][col-num_cols] + 1) == 10:
-            val = 1
-        grid[row].append(val)
+        grid[row].append(1 if (val := grid[row][col-num_cols] + 1) == 10 else val)
 
 # add the remaining rows
 for row in range(num_rows, num_rows*5):
