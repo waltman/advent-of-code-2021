@@ -9,7 +9,7 @@ def dist(grid, num_rows, num_cols):
         for col in range(num_cols-1):
             DG.add_weighted_edges_from([((row,col),(row,col+1),grid[row][col+1])])
             DG.add_weighted_edges_from([((row,col+1),(row,col),grid[row][col])])
-            # cols
+    # cols
     for col in range(num_cols):
         for row in range(num_rows-1):
             DG.add_weighted_edges_from([((row,col),(row+1,col),grid[row+1][col])])
