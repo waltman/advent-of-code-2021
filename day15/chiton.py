@@ -35,10 +35,6 @@ for row in range(num_rows):
 
 # add the remaining rows
 for row in range(num_rows, num_rows*5):
-    arr = []
-    for col in range(num_cols*5):
-        if (val := grid[row-num_rows][col] + 1) == 10:
-            val = 1
-        arr.append(val)
-    grid.append(arr)
+    grid.append([1 if (val := grid[row-num_rows][col] + 1) == 10 else val for col in range(num_cols*5)])
+
 print('Part 2:', dist(grid, num_rows*5, num_cols*5))
