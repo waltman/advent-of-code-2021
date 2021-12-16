@@ -1,5 +1,4 @@
 import sys
-import networkx as nx
 from heapq import heappush, heappop
 
 def neighbors(row, col, num_rows, num_cols):
