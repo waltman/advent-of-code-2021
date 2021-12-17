@@ -11,25 +11,20 @@ def decode_literal(packet, i):
         if flag == '0':
             break
     val = int(bits, 2)
-    print(f'{val=}')
     return i, val
 
 def decode_operator(packet, i, op):
-    print('decode_operator')
     length_type = packet[i]; i += 1
     arr = []
     if length_type == '0':
         subpacket_len = int(packet[i:i+15], 2); i += 15
-        print(f'{subpacket_len=}')
         end = i + subpacket_len
         while i < end:
             i, val = decode_packet(packet, i)
             arr.append(val)
     else:
         num_subpackets = int(packet[i:i+11], 2); i += 11
-        print(f'{num_subpackets=}')
         for j in range(num_subpackets):
-            print(f'{j=}')
             i, val = decode_packet(packet, i)
             arr.append(val)
     return i, op(arr)
@@ -48,14 +43,11 @@ def decode_packet(packet, i):
 
     version = int(packet[i:i+3], 2); i += 3
     version_sum += version
-    print(f'{version=}')
     type_id = int(packet[i:i+3], 2); i += 3
-    print(f'{type_id=}')
     if type_id == 4:
         i, res = decode_literal(packet, i)
     else:
         i, res = decode_operator(packet, i, op[type_id])
-        print(f'{i=}')
 
     return i, res
 
