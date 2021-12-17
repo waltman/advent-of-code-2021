@@ -3,27 +3,6 @@ from math import prod
 
 version_sum = 0
 
-def op_sum(arr):
-    return sum(arr)
-
-def op_prod(arr):
-    return prod(arr)
-
-def op_min(arr):
-    return min(arr)
-
-def op_max(arr):
-    return max(arr)
-
-def op_gt(arr):
-    return 1 if arr[0] > arr[1] else 0
-
-def op_lt(arr):
-    return 1 if arr[0] < arr[1] else 0
-
-def op_eq(arr):
-    return 1 if arr[0] == arr[1] else 0
-
 def decode_literal(packet, i):
     bits = ''
     while True:
@@ -58,13 +37,13 @@ def decode_operator(packet, i, op):
 def decode_packet(packet, i):
     global version_sum
     
-    op = {0: op_sum,
-          1: op_prod,
-          2: op_min,
-          3: op_max,
-          5: op_gt,
-          6: op_lt,
-          7: op_eq,
+    op = {0: lambda a: sum(a),
+          1: lambda a: prod(a),
+          2: lambda a: min(a),
+          3: lambda a: max(a),
+          5: lambda a: 1 if a[0] > a[1] else 0,
+          6: lambda a: 1 if a[0] < a[1] else 0,
+          7: lambda a: 1 if a[0] == a[1] else 0,
           }
 
     version = int(packet[i:i+3], 2); i += 3
