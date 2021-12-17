@@ -12,14 +12,14 @@ const bool hit_target(const int x1, const int x2, const int y1, const int y2, co
         int vy = viy;
 
         while (1) {
-                x += vx;
-                if (--vx < 0)
-                        vx = 0;
-                y += vy--;
-                if (x1 <= x && x <= x2 && y1 <= y && y <= y2)
-                        return true;
-                else if (x > x2 || y < y1)
-                        return false;
+            x += vx;
+            if (--vx < 0)
+                vx = 0;
+            y += vy--;
+            if (x1 <= x && x <= x2 && y1 <= y && y <= y2)
+                return true;
+            else if (x > x2 || y < y1)
+                return false;
         }
 }
 
@@ -33,7 +33,10 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    int x1, y1, x2, y2;
+    int x1 = 0;
+    int x2 = 0;
+    int y1 = 0;
+    int y2 = 0;
     string line;
     smatch m;
     regex e ("x=([\\d\\-]+)\\.\\.([\\d\\-]+), y=([\\d\\-]+)\\.\\.([\\d\\-]+)");
@@ -48,30 +51,30 @@ int main(int argc, char *argv[]) {
     // part 1
     int best_ymax = -1000000;
     for (int viy = 0; viy <= 1000; viy++) {
-            int v = viy;
-            int y = 0;
-            int ymax = 0;
-            while (1) {
-                    y += v;
-                    if (ymax < y)
-                            ymax = y;
-                    if (y1 <= y && y <= y2) {
-                            if (best_ymax < ymax)
-                                    best_ymax = ymax;
-                            break;
-                    } else if (y < y1)
-                            break;
-                    else
-                            v--;
-            }
+        int v = viy;
+        int y = 0;
+        int ymax = 0;
+        while (1) {
+            y += v;
+            if (ymax < y)
+                ymax = y;
+            if (y1 <= y && y <= y2) {
+                if (best_ymax < ymax)
+                    best_ymax = ymax;
+                break;
+            } else if (y < y1)
+                break;
+            else
+                v--;
+        }
     }
     cout << "Part 1: " << best_ymax << endl;
                                     
     // part 2
     int cnt = 0;
     for (int vix = 0; vix <= x2; vix++)
-            for (int viy = y1; viy <= 500; viy++)
-                    if (hit_target(x1, x2, y1, y2, vix, viy))
-                            cnt++;
+        for (int viy = y1; viy <= 500; viy++)
+            if (hit_target(x1, x2, y1, y2, vix, viy))
+                cnt++;
     cout << "Part 2: " << cnt << endl;
 }
