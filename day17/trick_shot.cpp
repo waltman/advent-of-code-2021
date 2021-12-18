@@ -6,21 +6,21 @@
 using namespace std;
 
 const bool hit_target(const int x1, const int x2, const int y1, const int y2, const int vix, const int viy) {
-        int x = 0;
-        int vx = vix;
-        int y = 0;
-        int vy = viy;
+    int x = 0;
+    int vx = vix;
+    int y = 0;
+    int vy = viy;
 
-        while (1) {
-            x += vx;
-            if (--vx < 0)
-                vx = 0;
-            y += vy--;
-            if (x1 <= x && x <= x2 && y1 <= y && y <= y2)
-                return true;
-            else if (x > x2 || y < y1)
-                return false;
-        }
+    while (1) {
+        x += vx;
+        if (--vx < 0)
+            vx = 0;
+        y += vy--;
+        if (x1 <= x && x <= x2 && y1 <= y && y <= y2)
+            return true;
+        else if (x > x2 || y < y1)
+            return false;
+    }
 }
 
 int main(int argc, char *argv[]) {
