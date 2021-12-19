@@ -190,5 +190,18 @@ class Pair:
             val = self.right
             self.right = Pair([floor(val/2), ceil(val/2)], self)
 
+    def magnitude(self):
+        if isinstance(self.left, int):
+            lmag = 3 * self.left
+        else:
+            lmag = 3 * self.left.magnitude()
+
+        if isinstance(self.right, int):
+            rmag = 2 * self.right
+        else:
+            rmag = 2 * self.right.magnitude()
+
+        return lmag + rmag            
+
     def __str__(self):
         return f'[{self.left},{self.right}]'
