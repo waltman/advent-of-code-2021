@@ -25,51 +25,15 @@ class Pair:
             return None, None
         else:
             if isinstance(p.parent.left, int):
-                print('found left:', p.parent.left)
                 return p.parent, 'left'
             else:
                 p = p.parent.left
                 while p:
                     if isinstance(p.right, int):
-                        print('found left:', p.right)
                         return p, 'right'
                     else:
                         p = p.right
                 return None, None
-        # now we're either the root or a right child
-
-        # p = self.parent
-        # while p and p.is_left_child():
-        #     p = p.parent
-        # if p.parent is None:
-        #     if isinstance(p.right, int):
-        #         return p
-        #     else:
-        #         return None
-        # p = p.parent
-        # while p and isinstance(p.left, Pair):
-        #     p = p.left
-        # if p:
-        #     return p
-        # else:
-        #     return None
-        # if p.is_right_child():
-        #     p = p.parent
-        # while p and p.is_left_child():
-        #     p = p.parent
-        # if p and p.is_right_child():
-        #     if isinstance(p.left, int):
-        #         return p
-        #     else:
-        #         stack = [(p.parent.left, p.parent)]
-        #         while len(stack):
-        #             p, parent= stack.pop()
-        #             if isinstance(p, int):
-        #                 return parent
-        #             else:
-        #                 stack.append((p.left, p))
-        #                 stack.append((p.right, p))
-        # return None
         
     def reg_right(self):
         p = self
@@ -79,49 +43,15 @@ class Pair:
             return None, None
         else:
             if isinstance(p.parent.right, int):
-                print('found right:', p.parent.right)
                 return p.parent, 'right'
             else:
                 p = p.parent.right
                 while p:
                     if isinstance(p.left, int):
-                        print('found right:', p.left)
                         return p, 'left'
                     else:
                         p = p.left
                 return None, None
-        # p = self.parent
-        # while p and p.is_right_child():
-        #     p = p.parent
-        # if p.parent is None:
-        #     if isinstance(p.left, int):
-        #         return p
-        #     else:
-        #         return None
-        # p = p.parent
-        # while p and isinstance(p.right, Pair):
-        #     p = p.right
-        # if p:
-        #     return p
-        # else:
-        #     return None
-        # if p.is_left_child():
-        #     p = p.parent
-        # while p and p.is_right_child():
-        #     p = p.parent
-        # if p and p.is_left_child():
-        #     if isinstance(p.right, int):
-        #         return p
-        #     else:
-        #         stack = [(p.parent.right, p.parent)]
-        #         while len(stack):
-        #             p, parent= stack.pop()
-        #             if isinstance(p, int):
-        #                 return parent
-        #             else:
-        #                 stack.append((p.left, p))
-        #                 stack.append((p.right, p))
-        # return None
 
     def is_left_child(self):
         return self.parent and self.parent.left == self
@@ -151,20 +81,12 @@ class Pair:
                 p.left += self.left
             else:
                 p.right += self.left
-            # if isinstance(p.right, int):
-            #     p.right += self.left
-            # else:
-            #     p.left += self.left
         p,lr = self.reg_right()
         if p:
             if lr == 'left':
                 p.left += self.right
             else:
                 p.right += self.right
-            # if isinstance(p.left, int):
-            #     p.left += self.right
-            # else:
-            #     p.right += self.right
 
         if self.is_left_child():
             self.parent.left = 0
