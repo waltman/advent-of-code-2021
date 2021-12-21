@@ -2,7 +2,7 @@ import sys
 import numpy as np
 
 def pixel_val(grid, row, col):
-    return int(''.join([str(i) for i in grid[row-1:row+2,col-1:col+2].flatten()]), 2)
+    return int(''.join(map(str, grid[row-1:row+2,col-1:col+2].flatten())), 2)
 
 # parse the input
 with open(sys.argv[1]) as f:
