@@ -9,25 +9,24 @@ with open(sys.argv[1]) as f:
     alg = [0 if c == '.' else 1 for c in f.readline().rstrip()]
     f.readline()
     lines = np.array([[0 if c == '.' else 1 for c in line.rstrip()] for line in f], int)
-    print(lines)
-    print(lines.shape)
     
 # put it in a grid with some buffer
-grid = np.zeros((lines.shape[0] + 10, lines.shape[1]+10), int)
-grid[5:5+lines.shape[0],5:5+lines.shape[1]] = lines
-print(grid)
-print()
+BUFFER = 120
+B2 = BUFFER//2
+grid = np.zeros((lines.shape[0]+BUFFER, lines.shape[1]+BUFFER), int)
+grid[B2:B2+lines.shape[0],B2:B2+lines.shape[1]] = lines
 
-for step in range(2):
+for step in range(50):
     if step % 2 == 0:
         new_grid = np.ones(grid.shape, int)
     else:
         new_grid = np.zeros(grid.shape, int)
+    # new_grid = np.zeros(grid.shape, int)
     for row in range(1,grid.shape[0]-1):
         for col in range(1,grid.shape[1]-1):
             new_grid[row,col] = alg[pixel_val(grid, row, col)]
-    print(new_grid)
-    print()
     grid = new_grid
+    if step == 1:
+        print('Part 1:', sum(grid.flatten()))
 
-print(sum(grid.flatten()))
+print('Part 2:', sum(grid.flatten()))
