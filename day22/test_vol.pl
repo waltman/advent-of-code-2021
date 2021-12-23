@@ -16,11 +16,11 @@ while (<>) {
 #    say $vol;
     $tot += $vol;
     $minx = $1 if $1 < $minx;
-    $miny = $1 if $1 < $miny;
-    $minz = $1 if $1 < $minz;
-    $maxx = $1 if $1 > $maxx;
-    $maxy = $1 if $1 > $maxy;
-    $maxz = $1 if $1 > $maxz;
+    $miny = $3 if $3 < $miny;
+    $minz = $5 if $5 < $minz;
+    $maxx = $2 if $2 > $maxx;
+    $maxy = $4 if $4 > $maxy;
+    $maxz = $6 if $6 > $maxz;
 }
 
 say $tot;
