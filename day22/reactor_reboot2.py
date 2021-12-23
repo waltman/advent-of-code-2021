@@ -28,7 +28,8 @@ rules2 = [(action, x1-minx, x2-minx+1, y1-miny, y2-miny+1, z1, z2) for (action, 
 cnt = 0
 cache = dict()
 RES = 2758514936282235
-for z in range(minz, maxz+1):
+#for z in range(minz, maxz+1):
+for z in range(8913, maxz+1):
     # check with rules apply
     valid_rules = []
     for i in range(len(rules2)):
@@ -49,11 +50,11 @@ for z in range(minz, maxz+1):
             (action, x1, x2, y1, y2, z1, z2) = rules2[i]
             print(action, x1, x2, y1, y2, z1, z2)
             if action == 'on':
-                mat[x1:x2, y1:y2] = 1
+                mat[x1:x2, y1:y2] = True
                 onsize = (x2-x1) * (y2-y1)
                 num_ons += 1
             else:
-                mat[x1:x2, y1:y2] = 0
+                mat[x1:x2, y1:y2] = False
                 num_offs += 1
         if num_ons == 1 and num_offs == 0:
             cache[valid_rules] = onsize
