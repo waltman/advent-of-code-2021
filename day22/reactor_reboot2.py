@@ -24,16 +24,26 @@ with open(sys.argv[1]) as f:
 
         rules.append((action, x1, x2, y1, y2, z1, z2))
 
+rules2 = [(action, x1-minx, x2-minx+1, y1-miny, y2-miny+1, z1, z2) for (action, x1, x2, y1, y2, z1, z2) in rules]
 cnt = 0
 for z in range(minz, maxz+1):
     mat = np.zeros([maxx-minx+1,maxy-miny+1], bool)
-    for (action, x1, x2, y1, y2, z1, z2) in rules:
+    num_ons = 0
+    num_offs = 0
+    onsize =0
+    for (action, x1, x2, y1, y2, z1, z2) in rules2:
         if z1 <= z <= z2:
+            print(action, x1, x2, y1, y2, z1, z2)
             if action == 'on':
-                mat[x1+minx:x2+minx+1,y1+miny:y2+miny+1] = 1
+#                mat[x1+minx:x2+minx+1,y1+miny:y2+miny+1] = 1
+#                onsize = (x2-x1+1) * (y2-y1+1)
+                mat[x1:x2, y1:y2] = 1
+                onsize = (x2-x1) * (y2-y1)
+                num_ons += 1
             else:
                 mat[x1+minx:x2+minx+1,y1+miny:y2+miny+1] = 0
+                num_offs += 1
     cnt += np.count_nonzero(mat)
-    print(z, cnt)
+    print(z, cnt, onsize, num_ons, num_offs)
 
 print('Part 2:', cnt)
