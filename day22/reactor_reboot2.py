@@ -35,15 +35,16 @@ for z in range(minz, maxz+1):
         if z1 <= z <= z2:
             print(action, x1, x2, y1, y2, z1, z2)
             if action == 'on':
-#                mat[x1+minx:x2+minx+1,y1+miny:y2+miny+1] = 1
-#                onsize = (x2-x1+1) * (y2-y1+1)
                 mat[x1:x2, y1:y2] = 1
                 onsize = (x2-x1) * (y2-y1)
                 num_ons += 1
             else:
-                mat[x1+minx:x2+minx+1,y1+miny:y2+miny+1] = 0
+                mat[x1:x2, y1:y2] = 0
                 num_offs += 1
-    cnt += np.count_nonzero(mat)
+    if num_ons == 1 and num_offs == 0:
+        cnt += onsize
+    else:
+        cnt += np.count_nonzero(mat)
     print(z, cnt, onsize, num_ons, num_offs)
 
 print('Part 2:', cnt)
