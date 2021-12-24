@@ -18,9 +18,9 @@ with open(sys.argv[1]) as f:
         minx = min(x1, minx)
         miny = min(y1, miny)
         minz = min(z1, minz)
-        maxx = max(x1, maxx)
-        maxy = max(y1, maxy)
-        maxz = max(z1, maxz)
+        maxx = max(x2, maxx)
+        maxy = max(y2, maxy)
+        maxz = max(z2, maxz)
 
         rules.append((action, x1, x2, y1, y2, z1, z2))
 
