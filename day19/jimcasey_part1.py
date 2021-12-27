@@ -26,7 +26,7 @@ for beacons in scanners:
     distanceA, distanceB = sorted(neighbors)[0:2]
     neighborA = neighbors[distanceA]
     neighborB = neighbors[distanceB]
-    key = (distanceA + distanceB) * distance(neighborA, neighborB)
+    key = distanceA + distanceB
     unique.add(key)
 
 print(len(unique))
