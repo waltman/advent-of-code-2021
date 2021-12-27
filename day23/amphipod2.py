@@ -62,10 +62,10 @@ def best_solution(diagram, energy):
     grid = diagram.split('\n')
 
     # do we have a solution?
-    if grid[2][3] == 'A' and grid[3][3] == 'A' and \
-       grid[2][5] == 'B' and grid[3][5] == 'B' and \
-       grid[2][7] == 'C' and grid[3][7] == 'C' and \
-       grid[2][9] == 'D' and grid[3][9] == 'D':
+    if grid[2][3] == 'A' and grid[3][3] == 'A' and grid[4][3] == 'A' and grid[5][3] == 'A' and \
+       grid[2][5] == 'B' and grid[3][5] == 'B' and grid[4][5] == 'B' and grid[5][5] == 'B' and \
+       grid[2][7] == 'C' and grid[3][7] == 'C' and grid[4][7] == 'C' and grid[5][7] == 'C' and \
+       grid[2][9] == 'D' and grid[3][9] == 'D' and grid[4][9] == 'D' and grid[5][9] == 'D':
        return energy
 
     # find all the possible moves
@@ -109,7 +109,6 @@ with open(sys.argv[1]) as f:
 
 # add the 2 new lines
 diagram = diagram[0:42] + '  #D#C#B#A#\n  #D#B#A#C#\n' + diagram[42:]
-print(diagram)
 
-#print('Part 2:', best_solution(diagram, 0))
+print('Part 2:', best_solution(diagram, 0))
 
