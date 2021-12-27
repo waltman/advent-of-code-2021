@@ -1,9 +1,8 @@
 from collections import defaultdict
 from math import sqrt
-import os
+import sys
 
-scriptPath = os.path.dirname(os.path.abspath(__file__))
-inputPath = scriptPath + '/input.txt'
+inputPath = sys.argv[1]
 
 with open(inputPath) as file:
   scanners = [
