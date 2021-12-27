@@ -1,5 +1,6 @@
 import sys
 from functools import cache
+from queue import Queue, PriorityQueue
 
 def clear_path(grid, from_col, to_col):
     delta = 1 if from_col < to_col else -1
@@ -46,7 +47,7 @@ def valid_moves(diagram, row, col, ch):
         new_row = home_row(grid, home_col[ch])
         vert = (row-1) + (new_row-1)
         horz = abs(col-home_col[ch])
-        return [(ch, row, col, 3, home_col[ch], cost[ch] * (vert + horz))]
+        return [(ch, row, col, new_row, home_col[ch], cost[ch] * (vert + horz))]
     elif row == 1:
         return []
 
@@ -94,46 +95,75 @@ def moveable(grid, ch, row, col):
                 return False
         return True
 
-@cache
 def best_solution(diagram, energy):
-    grid = diagram.split('\n')
-
-    # do we have a solution?
-    if grid[2][3] == 'A' and grid[3][3] == 'A' and grid[4][3] == 'A' and grid[5][3] == 'A' and \
-       grid[2][5] == 'B' and grid[3][5] == 'B' and grid[4][5] == 'B' and grid[5][5] == 'B' and \
-       grid[2][7] == 'C' and grid[3][7] == 'C' and grid[4][7] == 'C' and grid[5][7] == 'C' and \
-       grid[2][9] == 'D' and grid[3][9] == 'D' and grid[4][9] == 'D' and grid[5][9] == 'D':
-       return energy
-
-    # find all the possible moves
-    moves = []
-    # check columns
-    for ch, col in [('A', 3), ('B', 5), ('C', 7), ('D', 9)]:
-        for row in range(2, 6):
-            if moveable(grid, grid[row][col], row, col):
-                moves += valid_moves(diagram, row, col, grid[row][col])
-                break
-            
-    # corridor
-    for col in range(len(grid[1])):
-        if grid[1][col] in set(['A','B','C','D']):
-            moves += valid_moves(diagram, 1, col, grid[1][col])
-
+    q = PriorityQueue()
+    q.put((energy, diagram, 0))
     best_score = float('Inf')
-    for move in moves:
-        ch, row1, col1, row2, col2, cost = move
-        new_grid = grid.copy()
+    added = {diagram: 0}
+    processed = set()
 
-        tmp = list(new_grid[row1])
-        tmp[col1] = '.'
-        new_grid[row1] = ''.join(tmp)
+    while not q.empty():
+        energy, diagram, step = q.get()
+        if energy >= best_score:
+            continue
 
-        tmp = list(new_grid[row2])
-        tmp[col2] = ch
-        new_grid[row2] = ''.join(tmp)
+        if diagram in processed:
+            continue
+        else:
+            processed.add(diagram)
 
-        new_diagram = '\n'.join(new_grid)
-        best_score = min(best_score, best_solution(new_diagram, energy + cost))
+        print(f'{step=}, {energy=}')
+#        print(diagram)
+
+        grid = diagram.split('\n')
+
+        # do we have a solution?
+        if grid[2][3] == 'A' and grid[3][3] == 'A' and grid[4][3] == 'A' and grid[5][3] == 'A' and \
+           grid[2][5] == 'B' and grid[3][5] == 'B' and grid[4][5] == 'B' and grid[5][5] == 'B' and \
+           grid[2][7] == 'C' and grid[3][7] == 'C' and grid[4][7] == 'C' and grid[5][7] == 'C' and \
+           grid[2][9] == 'D' and grid[3][9] == 'D' and grid[4][9] == 'D' and grid[5][9] == 'D':
+            if energy < best_score:
+                print('new best score', energy)
+                best_score = energy
+            continue
+
+        # find all the possible moves
+        moves = []
+        # check columns
+        for ch, col in [('A', 3), ('B', 5), ('C', 7), ('D', 9)]:
+            for row in range(2, 6):
+                if moveable(grid, grid[row][col], row, col):
+                    moves += valid_moves(diagram, row, col, grid[row][col])
+                    break
+
+        # corridor
+        for col in range(len(grid[1])):
+            if grid[1][col] in set(['A','B','C','D']):
+                moves += valid_moves(diagram, 1, col, grid[1][col])
+
+        best_score = float('Inf')
+        for move in moves:
+            ch, row1, col1, row2, col2, cost = move
+            new_grid = grid.copy()
+
+            tmp = list(new_grid[row1])
+            tmp[col1] = '.'
+            new_grid[row1] = ''.join(tmp)
+
+            tmp = list(new_grid[row2])
+            tmp[col2] = ch
+            new_grid[row2] = ''.join(tmp)
+
+            new_diagram = '\n'.join(new_grid)
+            new_cost = energy + cost
+            if new_diagram in added:
+                if new_cost < added[new_diagram]:
+                    q.put((new_cost, new_diagram, step+1))
+                    added[new_diagram] = new_cost
+            else:
+                q.put((new_cost, new_diagram, step+1))
+                added[new_diagram] = new_cost
+
     return best_score
             
 
