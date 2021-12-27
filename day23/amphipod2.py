@@ -12,6 +12,19 @@ def clear_path(grid, from_col, to_col):
         else:
             i += delta
 
+def homeable(grid, ch, col):
+    # there should be nothing but . and ch in this column
+    match = set(['.', ch])
+    for row in range(2,6):
+        if grid[row][col] not in match:
+            return False
+    return True
+
+def home_row(grid, col):
+    for row in range(5, 1, -1):
+        if grid[row][col] == '.':
+            return row
+
 @cache
 def valid_moves(diagram, row, col, ch):
     cost = {'A': 1,
@@ -29,14 +42,11 @@ def valid_moves(diagram, row, col, ch):
     grid = diagram.split('\n')
 
     # can we move it home?
-    if grid[3][home_col[ch]] == '.' and grid[2][home_col[ch]] == '.' and clear_path(grid, col, home_col[ch]):
-        vert = (row - 1) + 2
+    if homeable(grid, ch, home_col[ch]):
+        new_row = home_row(grid, home_col[ch])
+        vert = (row-1) + (new_row-1)
         horz = abs(col-home_col[ch])
         return [(ch, row, col, 3, home_col[ch], cost[ch] * (vert + horz))]
-    elif grid[2][home_col[ch]] == '.' and grid[3][home_col[ch]] == ch and clear_path(grid, col, home_col[ch]):
-        vert = (row - 1) + 1
-        horz = abs(col-home_col[ch])
-        return [(ch, row, col, 2, home_col[ch], cost[ch] * (vert + horz))]
     elif row == 1:
         return []
 
@@ -57,6 +67,33 @@ def valid_moves(diagram, row, col, ch):
 
     return moves
 
+def moveable(grid, ch, row, col):
+    home_col = {'A': 3,
+                'B': 5,
+                'C': 7,
+                'D': 9}
+
+    if ch not in home_col:
+        return False
+
+    if col == home_col[ch]:
+        # if something above is isn't a ., they're we're stuck
+        for r in range(2, row):
+            if grid[r][col] != '.':
+                return False
+
+        # everything below it should be ch
+        for r in range(row+1, 6):
+            if grid[r][col] != ch:
+                return True
+        return False
+    else:
+        # if something above is isn't a ., they're we're stuck
+        for r in range(2, row):
+            if grid[r][col] != '.':
+                return False
+        return True
+
 @cache
 def best_solution(diagram, energy):
     grid = diagram.split('\n')
@@ -70,16 +107,13 @@ def best_solution(diagram, energy):
 
     # find all the possible moves
     moves = []
-    # bottom row
-    for row, col, ch in [(3,3,'A'), (3,5,'B'), (3,7,'C'), (3,9,'D')]:
-        if grid[row][col] != ch and grid[row-1][col] == '.':
-            moves += valid_moves(diagram, row, col, grid[row][col])
-                         
-    # top row
-    for row, col, ch in [(2,3,'A'), (2,5,'B'), (2,7,'C'), (2,9,'D')]:
-        if grid[row][col] != ch or grid[row+1][col] != ch:
-            moves += valid_moves(diagram, row, col, grid[row][col])
-
+    # check columns
+    for ch, col in [('A', 3), ('B', 5), ('C', 7), ('D', 9)]:
+        for row in range(2, 6):
+            if moveable(grid, grid[row][col], row, col):
+                moves += valid_moves(diagram, row, col, grid[row][col])
+                break
+            
     # corridor
     for col in range(len(grid[1])):
         if grid[1][col] in set(['A','B','C','D']):
