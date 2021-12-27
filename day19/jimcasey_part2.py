@@ -1,4 +1,4 @@
-import os
+import sys
 
 def main():
   # get all scanners, which is a set of coordinates
@@ -56,8 +56,7 @@ def main():
 
 # reads the puzzle input
 def readInput():
-  scriptPath = os.path.dirname(os.path.abspath(__file__))
-  inputPath = scriptPath + '/input.txt'
+  inputPath = sys.argv[1]
 
   with open(inputPath) as file:
     # return an array of coordinate tuples for each scanner group
