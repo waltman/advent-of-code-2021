@@ -13,13 +13,15 @@ def clear_path(grid, from_col, to_col):
         else:
             i += delta
 
-def homeable(grid, ch, col):
+def homeable(grid, ch, from_col, to_col):
     # there should be nothing but . and ch in this column
     match = set(['.', ch])
     for row in range(2,6):
-        if grid[row][col] not in match:
+        if grid[row][to_col] not in match:
             return False
-    return True
+
+    # there should also be a clear path from from_col to to_col
+    return clear_path(grid, from_col, to_col)
 
 def home_row(grid, col):
     for row in range(5, 1, -1):
@@ -43,7 +45,7 @@ def valid_moves(diagram, row, col, ch):
     grid = diagram.split('\n')
 
     # can we move it home?
-    if homeable(grid, ch, home_col[ch]):
+    if homeable(grid, ch, col, home_col[ch]):
         new_row = home_row(grid, home_col[ch])
         vert = (row-1) + (new_row-1)
         horz = abs(col-home_col[ch])
@@ -96,14 +98,14 @@ def moveable(grid, ch, row, col):
         return True
 
 def best_solution(diagram, energy):
-    q = PriorityQueue()
-    q.put((energy, diagram, 0))
+    q = []
+    q.append((energy, diagram, 0))
     best_score = float('Inf')
     added = {diagram: 0}
     processed = set()
 
-    while not q.empty():
-        energy, diagram, step = q.get()
+    while q:
+        energy, diagram, step = q.pop()
         if energy >= best_score:
             continue
 
@@ -112,7 +114,7 @@ def best_solution(diagram, energy):
         else:
             processed.add(diagram)
 
-        print(f'{step=}, {energy=}')
+#        print(f'{step=}, {energy=}')
 #        print(diagram)
 
         grid = diagram.split('\n')
@@ -123,8 +125,9 @@ def best_solution(diagram, energy):
            grid[2][7] == 'C' and grid[3][7] == 'C' and grid[4][7] == 'C' and grid[5][7] == 'C' and \
            grid[2][9] == 'D' and grid[3][9] == 'D' and grid[4][9] == 'D' and grid[5][9] == 'D':
             if energy < best_score:
-                print('new best score', energy)
+                print('new best score', energy, 'in', step, 'steps')
                 best_score = energy
+                print(diagram)
             continue
 
         # find all the possible moves
@@ -141,7 +144,6 @@ def best_solution(diagram, energy):
             if grid[1][col] in set(['A','B','C','D']):
                 moves += valid_moves(diagram, 1, col, grid[1][col])
 
-        best_score = float('Inf')
         for move in moves:
             ch, row1, col1, row2, col2, cost = move
             new_grid = grid.copy()
@@ -158,10 +160,10 @@ def best_solution(diagram, energy):
             new_cost = energy + cost
             if new_diagram in added:
                 if new_cost < added[new_diagram]:
-                    q.put((new_cost, new_diagram, step+1))
+                    q.append((new_cost, new_diagram, step+1))
                     added[new_diagram] = new_cost
             else:
-                q.put((new_cost, new_diagram, step+1))
+                q.append((new_cost, new_diagram, step+1))
                 added[new_diagram] = new_cost
 
     return best_score
@@ -172,7 +174,7 @@ with open(sys.argv[1]) as f:
     diagram = ''.join(f.readlines())
 
 # add the 2 new lines
-diagram = diagram[0:42] + '  #D#C#B#A#\n  #D#B#A#C#\n' + diagram[42:]
+#diagram = diagram[0:42] + '  #D#C#B#A#\n  #D#B#A#C#\n' + diagram[42:]
 
 print('Part 2:', best_solution(diagram, 0))
 
