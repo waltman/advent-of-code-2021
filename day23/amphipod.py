@@ -1,13 +1,16 @@
 import sys
 from functools import cache
 
-def clear_path(grid, cols):
-    skip_col = cols[0]
-    cols = sorted(cols)
-    for col in range(cols[0], cols[1]+1):
-        if grid[1][col] != '.' and col != skip_col:
+def clear_path(grid, from_col, to_col):
+    delta = 1 if from_col < to_col else -1
+    i = from_col + delta
+    while True:
+        if grid[1][i] != '.':
             return False
-    return True
+        elif i == to_col:
+            return True
+        else:
+            i += delta
 
 @cache
 def valid_moves(diagram, row, col, ch):
@@ -26,11 +29,11 @@ def valid_moves(diagram, row, col, ch):
     grid = diagram.split('\n')
 
     # can we move it home?
-    if grid[3][home_col[ch]] == '.' and grid[2][home_col[ch]] == '.' and clear_path(grid, [col, home_col[ch]]):
+    if grid[3][home_col[ch]] == '.' and grid[2][home_col[ch]] == '.' and clear_path(grid, col, home_col[ch]):
         vert = (row - 1) + 2
         horz = abs(col-home_col[ch])
         return [(ch, row, col, 3, home_col[ch], cost[ch] * (vert + horz))]
-    elif grid[2][home_col[ch]] == '.' and grid[3][home_col[ch]] == ch and clear_path(grid, [col, home_col[ch]]):
+    elif grid[2][home_col[ch]] == '.' and grid[3][home_col[ch]] == ch and clear_path(grid, col, home_col[ch]):
         vert = (row - 1) + 1
         horz = abs(col-home_col[ch])
         return [(ch, row, col, 2, home_col[ch], cost[ch] * (vert + horz))]
