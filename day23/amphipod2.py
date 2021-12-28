@@ -100,42 +100,23 @@ def moveable(grid, ch, row, col):
         return True
 
 def best_solution(diagram, energy):
-#    q = []
-#    q.append((energy, diagram, 0))
     q = [(-energy, energy, diagram, 0)]
     best_score = float('Inf')
-    added = {diagram: 0}
-    processed = set()
     dst = {}
-    done_state = ''
+    done_state = """#############
+#...........#
+###A#B#C#D###
+  #A#B#C#D#
+  #A#B#C#D#
+  #A#B#C#D#
+  #########
+"""
     while q:
-#        energy, diagram, step = q.pop()
         _, energy, diagram, step = heappop(q)
         if energy >= best_score:
             continue
 
-        if energy == 45272:
-            print('blah\n', diagram)
-#        print(f'{step=}, {energy=}, {len(q)=}')
-#        print(diagram)
-
         grid = diagram.split('\n')
-
-        # # do we have a solution?
-        # if grid[2][3] == 'A' and grid[3][3] == 'A' and grid[4][3] == 'A' and grid[5][3] == 'A' and \
-        #    grid[2][5] == 'B' and grid[3][5] == 'B' and grid[4][5] == 'B' and grid[5][5] == 'B' and \
-        #    grid[2][7] == 'C' and grid[3][7] == 'C' and grid[4][7] == 'C' and grid[5][7] == 'C' and \
-        #    grid[2][9] == 'D' and grid[3][9] == 'D' and grid[4][9] == 'D' and grid[5][9] == 'D':
-        #     if energy < best_score:
-        #         print('new best score', energy, 'in', step, 'steps')
-        #         best_score = energy
-        #         print(diagram)
-        #     continue
-
-        if diagram in processed:
-            continue
-        else:
-            processed.add(diagram)
 
         # find all the possible moves
         moves = []
@@ -167,20 +148,16 @@ def best_solution(diagram, energy):
             new_cost = energy + cost
 
             # do we have a solution?
-            if new_grid[2][3] == 'A' and new_grid[3][3] == 'A' and new_grid[4][3] == 'A' and new_grid[5][3] == 'A' and \
-               new_grid[2][5] == 'B' and new_grid[3][5] == 'B' and new_grid[4][5] == 'B' and new_grid[5][5] == 'B' and \
-               new_grid[2][7] == 'C' and new_grid[3][7] == 'C' and new_grid[4][7] == 'C' and new_grid[5][7] == 'C' and \
-               new_grid[2][9] == 'D' and new_grid[3][9] == 'D' and new_grid[4][9] == 'D' and new_grid[5][9] == 'D':
+            if new_diagram == done_state:
                 if new_cost < best_score:
                     print('new best score', new_cost, 'in', step, 'steps')
                     best_score = new_cost
                     dst[new_diagram] = new_cost
-#                    print(new_diagram)
             else:
                 dst[new_diagram] = min(dst.get(new_diagram, float('inf')), new_cost)
                 heappush(q, (-new_cost, new_cost, new_diagram, step+1))
-#                    print(new_diagram, new_cost, len(dst))
 
+    print(dst[done_state])
     return best_score
             
 
@@ -190,7 +167,6 @@ with open(sys.argv[1]) as f:
 
 # add the 2 new lines
 diagram = diagram[0:42] + '  #D#C#B#A#\n  #D#B#A#C#\n' + diagram[42:]
-print(diagram)
 
 print('Part 2:', best_solution(diagram, 0))
 
