@@ -1,5 +1,4 @@
 import sys
-from functools import cache
 from queue import Queue, PriorityQueue
 from heapq import heappush, heappop
 
@@ -29,7 +28,6 @@ def home_row(grid, col):
         if grid[row][col] == '.':
             return row
 
-@cache
 def valid_moves(diagram, row, col, ch):
     cost = {'A': 1,
             'B': 10,
@@ -52,7 +50,7 @@ def valid_moves(diagram, row, col, ch):
         vert = (row-1) + (new_row-1)
         horz = abs(col-home_col[ch])
         return [(ch, row, col, new_row, home_col[ch], cost[ch] * (vert + horz))]
-    elif row == 1:
+    if row == 1:
         return []
 
     # find all the corridors
@@ -116,6 +114,8 @@ def best_solution(diagram, energy):
         if energy >= best_score:
             continue
 
+        if energy == 45272:
+            print('blah\n', diagram)
 #        print(f'{step=}, {energy=}, {len(q)=}')
 #        print(diagram)
 
@@ -190,6 +190,7 @@ with open(sys.argv[1]) as f:
 
 # add the 2 new lines
 diagram = diagram[0:42] + '  #D#C#B#A#\n  #D#B#A#C#\n' + diagram[42:]
+print(diagram)
 
 print('Part 2:', best_solution(diagram, 0))
 
