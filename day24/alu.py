@@ -10,7 +10,7 @@ best = -1
 for pr in product(range(1,10), repeat=14):
     step += 1
     if step % 100_000 == 0:
-        print(f'{step=}, {best=}')
+        print(f'{step=}, {pr=}, {best=}')
     
     monad = Monad(pgm, pr)
     monad.run()
