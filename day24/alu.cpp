@@ -46,20 +46,15 @@ int main(int argc, char *argv[]) {
     int *digit;
     unsigned long long step = 0;
     Timer compute;
-    compute.start();
     while ((digit = odometer.next()) != NULL) {
-        // if (++step >= 100000000) {
-        //     compute.stop();
-        //     break;
-        // }
         if ((++step % 1000000000) == 0) {
             cout << "clock = " << time(NULL) << " step = " << step << " odometer = ";
             dump(digit);
         }
-//        dump(digit);
         monad.reset(digit);
         monad.run();
-//        cout << monad << endl;
+        // dump(digit);
+        // cout << monad << endl;
         if (monad.get_reg('z') == 0) {
             cout << "Part 1: ";
             dump(digit);
@@ -67,6 +62,4 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    dump(digit);
-    report(compute, "compute");
 }
