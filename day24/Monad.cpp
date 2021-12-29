@@ -12,10 +12,7 @@ void Monad::reset(int *input = NULL) {
         _input = input;
 
     inp_ptr = 0;
-    reg['x'] = 0;
-    reg['y'] = 0;
-    reg['z'] = 0;
-    reg['w'] = 0;
+    memset(reg, 0, sizeof(reg));
 }
     
 
@@ -62,25 +59,26 @@ void Monad::add_cmd(const string cmd) {
 }
 
 void Monad::run_cmd(struct cmd command) {
+    int a = command.a - 'w';
     if (command.op == 0)
-        reg[command.a] = _input[inp_ptr++];
+        reg[a] = _input[inp_ptr++];
     else {
-        long long val = command.constant ? command.b_val : reg[command.b_k];
+        long long val = command.constant ? command.b_val : reg[command.b_k - 'w'];
         switch (command.op) {
         case 1:
-            reg[command.a] += val;
+            reg[a] += val;
             break;
         case 2:
-            reg[command.a] *= val;
+            reg[a] *= val;
             break;
         case 3:
-            reg[command.a] /= val;
+            reg[a] /= val;
             break;
         case 4:
-            reg[command.a] %= val;
+            reg[a] %= val;
             break;
         case 5:
-            reg[command.a] = (reg[command.a] == val) ? 1 : 0;
+            reg[a] = (reg[a] == val) ? 1 : 0;
             break;
         }
     }

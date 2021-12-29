@@ -22,15 +22,15 @@ private:
     vector<struct cmd> _pgm;
     int *_input;
     size_t inp_ptr;
+    long long reg[4];
 
     void run_cmd(struct cmd command);
 
 public:
-    map<char, long long> reg;
     Monad(int *input);
     void run();
     void reset(int *input);
-    long long get_reg(char a) { return reg[a]; };
+    long long get_reg(char a) { return reg[a-'w']; };
     void add_cmd(const string cmd);
 };
 
