@@ -25,3 +25,9 @@ int *Odometer::next() {
         return NULL;
     }
 }
+
+void Odometer::set_digits(const char *s) {
+    for (size_t i = 0; i < _len; i++)
+        _digit[i] = s[i] - '0';
+}
+

@@ -43,6 +43,9 @@ int main(int argc, char *argv[]) {
         monad.add_cmd(line);
 
     Odometer odometer(LEN);
+    if (argc > 1)
+        odometer.set_digits(argv[1]);
+
     int *digit;
     unsigned long long step = 0;
     Timer compute;

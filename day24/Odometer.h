@@ -18,6 +18,7 @@ public:
     size_t size() { return _len; }
     int digit(size_t i) { return _digit[i]; }
     int *next();
+    void set_digits(const char *s);
 };
 
 #endif
