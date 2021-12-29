@@ -64,3 +64,11 @@ class Monad:
                 self.ops[toks[0]](toks[1], toks[2])
 #            print(self.reg)
 #        print(self.reg)
+
+    def reset(self):
+        self.ip = 0
+        self.inp_ptr = 0
+        self.reg = {'x': 0,
+                    'y': 0,
+                    'z': 0,
+                    'w': 0}
