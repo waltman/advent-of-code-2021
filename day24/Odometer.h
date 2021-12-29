@@ -14,7 +14,7 @@ private:
 
 public:
     Odometer(const size_t len);
-    ~Odometer() { delete _digit; }
+    ~Odometer() { delete[] _digit; }
     size_t size() { return _len; }
     int digit(size_t i) { return _digit[i]; }
     int *next();
