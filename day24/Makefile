@@ -5,11 +5,11 @@ LIBDIRS =
 LIBS =
 CFLAGS = -Wall -O3 $(INCLDIRS)
 CPPFLAGS = -std=c++17 -Wall -O3 $(INCLDIRS)
-CPPOBJECTS = alu.o Odometer.o Monad.o
+CPPOBJECTS = alu.o Odometer.o Monad.o timer.o
 
 all: alu alu_test1 alu_test2 alu_test3
 
-alu.o: Odometer.h Monad.h
+alu.o: Odometer.h Monad.h timer.h
 
 alu_test1.o: Monad.h
 
@@ -20,6 +20,8 @@ alu_test3.o: Monad.h
 Odometer.o: Odometer.h
 
 Monad.o: Monad.h
+
+timer.o: timer.h
 
 %.o: %.cpp
 	$(CPP) $(CPPFLAGS) -c $<
@@ -42,4 +44,4 @@ alu_test3: alu_test3.o Monad.o
 clean:
 	rm -f *~
 	rm -f *.o
-	rm -f alu alu_test
+	rm -f alu alu_test1 alu_test2 alu_test3

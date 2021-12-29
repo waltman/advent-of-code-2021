@@ -8,7 +8,7 @@ Odometer::Odometer(const size_t len) {
         _digit[i] = 9;
 }
 
-const int *Odometer::next() {
+int *Odometer::next() {
     if (_first) {
         _first = false;
         return _digit;

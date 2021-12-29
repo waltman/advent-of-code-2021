@@ -1,52 +1,72 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <time.h>
 #include "Odometer.h"
+#include "Monad.h"
+#include "timer.h"
 
 using namespace std;
 
-const int LEN = 2;
+const int LEN = 14;
+const string PGM = "input1.txt";
 
-// bool is_numeric(const string str) {
-//     for (char c : str) {
-//         if (!(isdigit(c) || c == '-'))
-//             return false;
-//     }
-//     return true;
-// }
-
-int main(int argc, char *argv[]) {
-    Odometer odometer(LEN);
-    const int *digit;
-    while ((digit = odometer.next()) != NULL) {
-        for (int i = 0; i < LEN; i++) {
-            cout << digit[i] << " ";
-        }
-        cout << endl;
+void dump(int *digit) {
+    for (int i = 0; i < LEN; i++) {
+        cout << digit[i];
     }
-
-    // cout << "123 " << is_numeric("123") << endl;
-    // cout << "1a23 " << is_numeric("1a23") << endl;
-    // cout << "-123 " << is_numeric("-123") << endl;
+    cout << endl;
 }
 
-    // for (int i01 = 1; i01 <= 9; i01++)
-    // for (int i02 = 1; i02 <= 9; i02++)
-    // for (int i03 = 1; i03 <= 9; i03++)
-    // for (int i04 = 1; i04 <= 9; i04++)
-    // for (int i05 = 1; i05 <= 9; i05++)
-    // for (int i06 = 1; i06 <= 9; i06++)
-    // for (int i07 = 1; i07 <= 9; i07++)
-    // for (int i08 = 1; i08 <= 9; i08++)
-    // for (int i09 = 1; i09 <= 9; i09++)
-    // for (int i10 = 1; i10 <= 9; i10++)
-    // for (int i11 = 1; i11 <= 9; i11++)
-    // for (int i12 = 1; i12 <= 9; i12++)
-    // for (int i13 = 1; i13 <= 9; i13++)
-    // for (int i14 = 1; i14 <= 9; i14++) {
-    //     cout << i01 << i02 << i03 << i04 << i05 << i06 << i07 << i08 << i09 << i10 << i11 << i12 << i13 << i14 << endl;
-    // }
-// }
+void report(const Timer &timer, const char *s) {
+    double stime = timer.stime();
+    double utime = timer.utime();
+    double ttime = stime + utime;
+    double wtime = timer.wtime();
 
-     
+    printf("%12s: %10.6f clock, %10.6f sys, %10.6f user, %10.6f total\n",
+           s, wtime, stime, utime, ttime);
+}
+
+int main(int argc, char *argv[]) {
+    ifstream infile(PGM);
+    if (!infile) {
+        perror(PGM.c_str());
+        exit(1);
+    }
+
+    Monad monad(NULL);
+    string line;
+    while (getline(infile, line))
+        monad.add_cmd(line);
+
+    Odometer odometer(LEN);
+    int *digit;
+    unsigned long long step = 0;
+    Timer compute;
+    compute.start();
+    while ((digit = odometer.next()) != NULL) {
+        // if (++step >= 100000000) {
+        //     compute.stop();
+        //     break;
+        // }
+        if ((++step % 1000000000) == 0) {
+            cout << "clock = " << time(NULL) << " step = " << step << " odometer = ";
+            dump(digit);
+        }
+//        dump(digit);
+        monad.reset(digit);
+        monad.run();
+//        cout << monad << endl;
+        if (monad.get_reg('z') == 0) {
+            cout << "Part 1: ";
+            dump(digit);
+            cout << monad << endl;
+            break;
+        }
+    }
+    dump(digit);
+    report(compute, "compute");
+}
