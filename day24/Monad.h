@@ -1,5 +1,5 @@
-#ifndef ODOMETER_H
-#define ODOMETER_H
+#ifndef MONAD_H
+#define MONAD_H
 
 #include <vector>
 #include <map>
