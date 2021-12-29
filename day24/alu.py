@@ -21,14 +21,14 @@ best = -1
 #         best = ''.join(pr)
 
 #for pr in product(range(1,10), repeat=14):
-for pr in product(range(9,0,-1), repeat=14):
+for pr in product(range(9,0,-1), repeat=1):
     step += 1
     if step % 100_000 == 0:
         print(f'{step=}, {pr=}, {best=}')
     
     monad = Monad(pgm, pr)
     monad.run()
-#    print(pr, monad.reg)
+    print(pr, monad.reg)
     if monad.reg['z'] == 0:
         print(pr, monad.reg['z'])
         best = ''.join(pr)
