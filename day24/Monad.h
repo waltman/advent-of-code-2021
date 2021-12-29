@@ -5,29 +5,41 @@
 #include <map>
 #include <cstddef>
 #include <string>
+#include <ostream>
 
 using namespace std;
 
+struct cmd {
+    int op;
+    char a;
+    bool constant;
+    long long b_val;
+    char b_k;
+};
+
 class Monad {
 private:
-    vector<string> _pgm;
+    vector<struct cmd> _pgm;
     int *_input;
-    size_t _size;
     size_t inp_ptr;
 
-    void do_inp(const char a);
-    void do_add(const char a, const string b);
-    void do_mul(const char a, const string b);
-    void do_div(const char a, const string b);
-    void do_mod(const char a, const string b);
-    void do_eql(const char a, const string b);
+    void run_cmd(struct cmd command);
 
 public:
     map<char, long long> reg;
-    Monad(vector<string> _pgm, int *input, size_t size);
+    Monad(int *input);
     void run();
-    void reset();
+    void reset(int *input);
     long long get_reg(char a) { return reg[a]; };
+    void add_cmd(const string cmd);
 };
+
+
+inline ostream &operator<<(ostream &os, Monad monad) {
+    return os << "w=" << monad.get_reg('w') <<
+                " x=" << monad.get_reg('x') <<
+                " y=" << monad.get_reg('y') <<
+                " z=" << monad.get_reg('z');
+}
 
 #endif
