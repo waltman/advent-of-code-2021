@@ -58,12 +58,12 @@ void Monad::add_cmd(const string cmd) {
     _pgm.push_back(command);
 }
 
-void Monad::run_cmd(struct cmd command) {
-    int a = command.a - 'w';
+void Monad::run_cmd(const struct cmd command) {
+    const int a = command.a - 'w';
     if (command.op == 0)
         reg[a] = _input[inp_ptr++];
     else {
-        long long val = command.constant ? command.b_val : reg[command.b_k - 'w'];
+        const long long val = command.constant ? command.b_val : reg[command.b_k - 'w'];
         switch (command.op) {
         case 1:
             reg[a] += val;

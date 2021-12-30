@@ -24,13 +24,13 @@ private:
     size_t inp_ptr;
     long long reg[4];
 
-    void run_cmd(struct cmd command);
+    void run_cmd(const struct cmd command);
 
 public:
     Monad(int *input);
     void run();
     void reset(int *input);
-    long long get_reg(char a) { return reg[a-'w']; };
+    long long get_reg(const char a) { return reg[a-'w']; };
     void add_cmd(const string cmd);
 };
 
