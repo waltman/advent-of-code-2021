@@ -15,17 +15,6 @@ with open(sys.argv[1]) as f:
 
 num_rows = len(grid)
 num_cols = len(grid[0])
-#print(grid)
-#print(num_rows, num_cols)
-
-#new_grid = [[' '] * num_cols] * num_rows
-#print(new_grid)
-
-# for row in range(num_rows):
-#     for col in range(num_cols):
-#         print(grid[row][col], end='')
-#     print()
-# print()
 
 step = 1
 done = False
@@ -41,11 +30,6 @@ while not done:
                 done = False
 
     grid = deepcopy(new_grid)
-    # for row in range(num_rows):
-    #     for col in range(num_cols):
-    #         print(grid[row][col], end='')
-    #     print()
-    # print()
 
     # move south
     grid = deepcopy(new_grid)
@@ -65,7 +49,7 @@ while not done:
 
 print('Part 1:', step)
 
-for row in range(num_rows):
-    for col in range(num_cols):
-        print(grid[row][col], end='')
-    print()
+# for row in range(num_rows):
+#     for col in range(num_cols):
+#         print(grid[row][col], end='')
+#     print()
