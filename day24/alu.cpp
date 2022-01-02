@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     unsigned long long step = 0;
     Timer compute;
     while ((digit = odometer.next()) != NULL) {
-        if ((++step % 1000000000) == 0) {
+        if ((++step % 100000000) == 0) {
             cout << "clock = " << time(NULL) << " step = " << step << " odometer = ";
             dump(digit);
         }
