@@ -11,7 +11,7 @@
 using namespace std;
 
 const int LEN = 14;
-const string PGM = "input1.txt";
+const string PGM = "input.txt";
 
 void dump(int *digit) {
     for (int i = 0; i < LEN; i++) {
