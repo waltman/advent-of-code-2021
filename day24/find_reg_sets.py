@@ -46,3 +46,4 @@ for regs in regsets:
         valid += regs[4]
 print('Part 1:', sorted(valid)[-1])
 print('Part 2:', sorted(valid)[0])
+print(f'There are a total of {len(valid)} solutions.')
