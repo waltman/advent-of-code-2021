@@ -3,7 +3,7 @@ from Monad import Monad
 from itertools import product
 from collections import defaultdict
 
-with open('input.txt') as f:
+with open(sys.argv[1]) as f:
     pgm = [line.rstrip() for line in f]
 
 regsets = [(0,0,0,0,[])]
